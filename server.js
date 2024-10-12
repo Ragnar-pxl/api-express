@@ -14,7 +14,7 @@ const app = express()
 const port = 3000
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://vue-mangas-typescript-two.onrender.com', 
   methods: ['GET', 'POST'],         
 }));
 
