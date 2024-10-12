@@ -1,6 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
 const favicon = require('serve-favicon')
+const sharp = require('sharp');
+const path = require('path');
+const fs = require('fs');
 const { success, getUniqueId } = require('./helper.js')
 const cors = require('cors')
 const path = require('path')
@@ -9,13 +12,10 @@ const path = require('path')
 let mangas = require('./mock-mangas')
 const authRoutes = require('./auth.js');
 
-//
-
-
-
-
 const app = express()
 const port = 3000
+
+app.use(express.static('public')); 
 
 app.use(cors({
   origin: 'https://vue-mangas-typescript-two.onrender.com', 
@@ -23,14 +23,51 @@ app.use(cors({
 }));
 
 
-//app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static('public')); 
 app.use(express.json())
 
-app.get('/images/:imageName', (req, res) => {
-  const imageName = req.params.imageName;
-  res.sendFile(path.join(__dirname, 'public', 'images', imageName))
-})
+
+app.get('/images/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const imagePath = path.join(__dirname, 'images', filename);
+
+
+  fs.access(imagePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send('Image not found');
+    }
+
+    const ext = path.extname(filename).toLowerCase();
+
+    let mimeType;
+    switch (ext) {
+      case '.png':
+        mimeType = 'image/png';
+        break;
+      case '.jpg':
+      case '.jpeg':
+        mimeType = 'image/jpeg';
+        break;
+      case '.gif':
+        mimeType = 'image/gif';
+        break;
+      case '.webp':
+        mimeType = 'image/webp';
+        break;
+      default:
+        return res.status(400).send('Unsupported image format');
+    }
+
+    sharp(imagePath)
+      .toBuffer()
+      .then((data) => {
+        res.type(mimeType); 
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send('Error processing image');
+      });
+  });
+});
 
 
 app
