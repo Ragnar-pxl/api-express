@@ -1,44 +1,47 @@
-require('dotenv').config(); // Charger les variables d'environnement
+const express = require('express')
+const morgan = require('morgan')
+const favicon = require('serve-favicon')
+const { success, getUniqueId } = require('./helper.js')
+const cors = require('cors')
+const path = require('path')
 
-const express = require('express');
-const morgan = require('morgan');
-const favicon = require('serve-favicon');
-const { success, getUniqueId } = require('./helper.js');
-const cors = require('cors');
-const path = require('path');
 
-let mangas = require('./mock-mangas');
+let mangas = require('./mock-mangas')
 const authRoutes = require('./auth.js');
 
-const app = express();
-const port = process.env.PORT || 3000; // Utiliser la variable d'environnement PORT
+
+const app = express()
+const port = 3000
 
 app.use(cors({
   origin: 'http://localhost:5173', 
   methods: ['GET', 'POST'],         
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.json())
+
 
 app
   .use(favicon(__dirname + '/favicon.ico'))
-  .use(morgan('dev'));
+  .use(morgan('dev'))
 
 // Anilist API
-app.use(authRoutes);
+app.use(authRoutes)
 
-// MY API
+
+//MY API
 app.get('/', (req, res) => {
   res.json({ message: 'Hello Randy, this message is from express js' });
 });
 
 app.get('/api/mangas/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const manga = mangas.find(manga => manga.id === id);
-  const message = "Un manga en particulier a été bien trouvé";
-  res.json(success(message, manga));
-});
+  const id = parseInt(req.params.id)
+  const manga = mangas.find(manga => manga.id === id)
+  const message = "Un manga en particulier a été bien trouvé"
+  res.json(success(message, manga))
+})
 
 app.get('/api/mangas', (req, res) => {
   const message = "La liste de tous les mangas disponibles sur le marché";
@@ -53,12 +56,13 @@ app.get('/api/mangas', (req, res) => {
 });
 
 app.post('/api/mangas', (req, res) => {
-  const id = getUniqueId(mangas);
-  const mangasCreated = { ...req.body, id: id };
-  mangas.push(mangasCreated);
-  const message = `Le manga ${mangasCreated.title} a bien été créé`;
-  res.json(success(message, mangasCreated));
-});
+  const id = getUniqueId(mangas)
+  const mangasCreadted = { ...req.body, ...{ id: id, created_at: today.toLocaleDateString("fr-FR", options) } }
+  mangas.push(mangasCreadted)
+  const message = `Le manga ${mangasCreadted} a bien été crée`
+  res.json(success(message, mangasCreadted))
+})
 
-// Démarrer le serveur
-app.listen(port, () => console.log(`Application running on server: http://localhost:${port}`));
+app.listen(port, () => console.log(`Application running on server : http://localhost:${port}`))
+
+
