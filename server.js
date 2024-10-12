@@ -9,6 +9,10 @@ const path = require('path')
 let mangas = require('./mock-mangas')
 const authRoutes = require('./auth.js');
 
+//
+
+
+
 
 const app = express()
 const port = 3000
@@ -19,8 +23,14 @@ app.use(cors({
 }));
 
 
-app.use(express.static(path.join(__dirname, 'public')))
+//app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static('public')); 
 app.use(express.json())
+
+app.get('/images/:imageName', (req, res) => {
+  const imageName = req.params.imageName;
+  res.sendFile(path.join(__dirname, 'public', 'images', imageName))
+})
 
 
 app
