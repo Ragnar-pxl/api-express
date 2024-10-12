@@ -1,7 +1,7 @@
 {
-  "name": "node-pokemon-api",
+  "name": "node-mangas-api",
   "version": "1.0.0",
-  "description": "An awesome API Rest to handle some pokemons.",
+  "description": "An awesome API of mangas world passion's.",
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
@@ -19,5 +19,9 @@
   "devDependencies": {
     "morgan": "^1.10.0",
     "nodemon": "^3.1.3"
+  },
+  "engines": {
+    "node": ">=20.0.0" 
   }
 }
+
