@@ -6,7 +6,7 @@ const cors = require('cors')
 const path = require('path')
 
 
-let mangas = require('./mock-mangas-prototyp.js')
+let mangas = require('./mock-mangas.js')
 const authRoutes = require('./auth.js');
 
 const app = express()
@@ -15,7 +15,7 @@ const port = 3000
 app.use(express.static('public')); 
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://vue-mangas-typescript-two.onrender.com', 
   methods: ['GET', 'POST'],         
 }));
 
