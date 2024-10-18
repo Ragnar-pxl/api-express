@@ -15,7 +15,7 @@ const port = 3000
 app.use(express.static('public')); 
 
 app.use(cors({
-  origin: 'https://vuemangasapi-production.up.railway.app', 
+  origin: 'https://vue-mangas-typescript-two.onrender.com', 
   methods: ['GET', 'POST'],         
 }));
 
