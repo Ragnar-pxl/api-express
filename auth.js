@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
+//commentaire
+
 router.get('/auth', (req, res) => {
   const redirectUri = encodeURIComponent('http://localhost:3000/auth/callback');
   const clientId = '21693'; 
